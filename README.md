@@ -48,6 +48,16 @@ This repository tracks a 6-phase journey from basic installation to building adv
 - Fork the OpenClaw repository, navigate its core source code (`core/`, `plugin-*/`), and submit pull requests.
 - Author advanced, complex skill frameworks.
 
+### [Phase 7: Security Deep Dive](07_security_deep_dive.md)
+**Goal:** Understand the formal security model and threat landscape.
+- Implement comprehensive sandboxing and zero-trust policies.
+- Secure production deployments against advanced exploits.
+
+### [Phase 8: Bonus — Giahuy AI Software Corp Integration](08_giahuy_multi_agent_workflow.md)
+**Goal:** Map a real-world multi-agent workflow into OpenClaw.
+- Simulate 12 distinct personas using a CEO Orchestrator skill.
+- Force local Qwen3 models to emit structured JSON tool calls.
+
 ## Getting Started
 
 To begin, proceed to **[Phase 1: Foundation & Onboarding](01_phase1_foundation.md)** and follow the installation instructions.
