@@ -16,6 +16,8 @@
 | **Phase 4** | Skills, Plugins & Automation | [04_phase4_skills_automation.md](./04_phase4_skills_automation.md) |
 | **Phase 5** | Power User — Multi-Agent, Remote Deployment, Security | [05_phase5_power_user.md](./05_phase5_power_user.md) |
 | **Phase 6** | Mastery & Contribution — Integrations, ClawHub, Open Source | [06_phase6_mastery.md](./06_phase6_mastery.md) |
+| **Phase 7** | Security Deep Dive — Threat Model, Sandboxing, Hardening | [07_security_deep_dive.md](./07_security_deep_dive.md) |
+| **Phase 8** | Bonus — Giahuy AI Software Corp Integration | [08_giahuy_multi_agent_workflow.md](./08_giahuy_multi_agent_workflow.md) |
 
 ---
 
@@ -24,7 +26,7 @@
 1. **Work through phases in order.** Each phase builds on the previous one.
 2. **Read the full Theory section before touching the keyboard.** Answer the Theory Check questions honestly — if you can't, re-read.
 3. **Do every project.** The projects are where real learning happens. Theory gives you the map; projects give you the territory.
-4. **Budget 4–8 weeks.** Phase 1–2 can be done in a weekend. Phases 3–6 will take sustained effort.
+4. **Budget 5–10 weeks.** Phase 1–2 can be done in a weekend. Phases 3–7 will take sustained effort. The Security Deep Dive (Phase 7) can be studied alongside Phases 4–6.
 5. **Keep a lab notebook.** Write down what surprised you, what broke, and what you figured out.
 
 ## Prerequisites for the Entire Curriculum
