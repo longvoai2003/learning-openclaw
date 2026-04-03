@@ -105,12 +105,14 @@ All channel configs live under the `channels` key:
 ```bash
 openclaw channels status --probe
 ```
+Probes connected channels to verify their health and configuration.
 
 **Step 2:** Examine the channel configuration:
 
 ```bash
 cat ~/.openclaw/openclaw.json | python3 -m json.tool
 ```
+Outputs and uniquely formats your OpenClaw JSON configuration file for reading.
 
 Look for the `channels` section. Note which channels are enabled (if any beyond the Dashboard).
 
@@ -164,6 +166,7 @@ You can do this through the Control UI or by editing the config:
 # Edit the config file
 nano ~/.openclaw/openclaw.json
 ```
+Opens the configuration file in a terminal text editor.
 
 Add or update the Telegram section:
 
@@ -183,12 +186,14 @@ Add or update the Telegram section:
 ```bash
 openclaw gateway restart
 ```
+Restarts the Gateway daemon to apply new configuration changes.
 
 **Step 4:** Verify the channel is connected.
 
 ```bash
 openclaw channels status --probe
 ```
+Probes connected channels to verify their health and configuration.
 
 You should see Telegram listed as connected.
 
@@ -198,11 +203,11 @@ Open Telegram, find your bot (search for the username you chose), and send:
 
 > "Hello from Telegram! Can you confirm which channel I'm reaching you from?"
 
-#### Common Mistakes
+#### Common Pitfalls
 
-- **Exposing the bot token:** Never commit it to git or share it publicly. Anyone with the token can control your bot.
-- **Bot not responding:** Check `openclaw logs --follow` for errors. Common cause: incorrect token.
-- **Double-running the bot:** If another process is already using this bot token, Telegram will return errors. Make sure no other service is using the same bot.
+- **Exposing the bot token:** Anyone with the token can control your bot. **Fix:** Never commit it to git or share it publicly. If compromised, revoke it immediately via BotFather.
+- **Bot not responding:** Common cause is an incorrect token or connection failure. **Fix:** Check `openclaw logs --follow` for errors, verify the token, and ensure the Gateway is running.
+- **Double-running the bot:** If another process is already using this bot token, Telegram will return errors. **Fix:** Make sure no other service is using the same bot token by stopping conflicting background processes.
 
 ---
 
@@ -306,6 +311,7 @@ Find your Telegram user ID (send a message to `@userinfobot` on Telegram to get 
 ```bash
 openclaw gateway restart
 ```
+Restarts the Gateway daemon to apply new configuration changes.
 
 **Step 4:** Test from an allowed account — it should work. Ask a friend to message the bot — their message should be silently dropped.
 
@@ -411,6 +417,7 @@ Discord bots can work in both DMs and server channels, making it great for team 
 openclaw gateway restart
 openclaw logs --follow  # Look for QR code instructions
 ```
+Restarts the Gateway, then streams the logs in real-time to display the WhatsApp QR code.
 
 **Step 3:** Scan the QR code with your phone (WhatsApp → Settings → Linked Devices → Link a Device).
 
@@ -475,7 +482,7 @@ An OpenClaw setup with Telegram, Dashboard, and at least one additional channel 
    openclaw gateway restart
    openclaw channels status --probe
    ```
-   Verify both channels show as connected.
+   Restarts the Gateway and verifies both channels show as connected.
 
 5. **Test isolation.** Send a message from Telegram:
    > "Remember: my favorite color is blue."
@@ -493,9 +500,9 @@ An OpenClaw setup with Telegram, Dashboard, and at least one additional channel 
 - ✅ Session isolation is working (context doesn't leak between channels)
 
 #### Common Pitfalls
-- **Forgetting to restart:** After config changes, always `openclaw gateway restart`.
-- **WhatsApp disconnecting:** If WhatsApp drops, check `openclaw logs --follow` for reconnection attempts.
-- **Discord permissions:** The bot needs appropriate permissions in the server (Send Messages, Read Messages).
+- **Forgetting to restart:** Configuration changes don't take effect immediately. **Fix:** Always run `openclaw gateway restart` after making edits to `openclaw.json`.
+- **WhatsApp disconnecting:** If WhatsApp drops or logs out unexpectedly. **Fix:** Check `openclaw logs --follow` for reconnection attempts or scan a new QR code if the session expired.
+- **Discord permissions:** The bot won't respond if it lacks permissions. **Fix:** Ensure the bot has "Send Messages" and "Read Messages" permissions enabled in the Discord Developer Portal and server roles.
 
 #### Stretch Goals
 1. Add a third channel and test all three simultaneously.
@@ -543,18 +550,23 @@ A hardened OpenClaw configuration with strict allowlists, per-channel-peer isola
    ```bash
    openclaw gateway restart
    ```
+   Restarts the Gateway daemon to apply new configuration changes.
+
    Send a message from your Telegram — it should work.
 
 3. **Test unauthorized access.** Ask a friend to message your bot on Telegram. Watch the logs:
    ```bash
    openclaw logs --follow
    ```
+   Streams the Gateway logs to your terminal in real-time.
+
    You should see the message being dropped. Your friend should receive no response.
 
 4. **Run a security audit:**
    ```bash
    openclaw security audit
    ```
+   Analyzes your configuration for security risks and missing protections.
 
 5. **Document your security configuration.** Ask the Dashboard:
    > "List all the security settings in my openclaw.json — who is allowed to talk to us, which channels are active, and what DM isolation mode is set."
@@ -566,8 +578,8 @@ A hardened OpenClaw configuration with strict allowlists, per-channel-peer isola
 - ✅ You can articulate your security configuration
 
 #### Common Pitfalls
-- **Wrong user ID format:** Telegram uses numeric user IDs (e.g., `"123456789"`), WhatsApp uses phone numbers with country code (e.g., `"+15555550123"`).
-- **Testing from the same account:** You can't test "unauthorized" by messaging yourself. Use a different account.
+- **Wrong user ID format:** Providing malformed IDs will cause all messages to be rejected. **Fix:** Ensure Telegram uses numeric user IDs (e.g., `"123456789"`) and WhatsApp uses phone numbers with the country code (e.g., `"+15555550123"`).
+- **Testing from the same account:** You can't test "unauthorized" blocking by messaging your bot from an allowed account. **Fix:** Use a genuinely different account or ask a friend to send a message.
 
 #### Stretch Goals
 1. Configure group-specific mention rules for a Telegram group.
@@ -623,6 +635,7 @@ An OpenClaw bot that works intelligently in a Telegram or Discord group — resp
    ```bash
    openclaw gateway restart
    ```
+   Restarts the Gateway daemon to apply new configuration changes.
 
 4. **Test WITHOUT mention:** Send a regular message in the group. The bot should NOT respond.
 
@@ -637,8 +650,8 @@ An OpenClaw bot that works intelligently in a Telegram or Discord group — resp
 - ✅ Group sessions are isolated from DM sessions
 
 #### Common Pitfalls
-- **Bot privacy mode in Telegram:** BotFather privacy settings may prevent the bot from seeing group messages. Send `/setprivacy` to BotFather and set it to "Disable" (allowing the bot to see all group messages).
-- **Wrong mention pattern:** The mention pattern must match exactly how users would mention the bot.
+- **Bot privacy mode in Telegram:** By default, telegram bots cannot read group messages, preventing mention detection. **Fix:** Send `/setprivacy` to BotFather and set it to "Disable".
+- **Wrong mention pattern:** The bot will ignore valid names if spelling or casing rules don't match. **Fix:** Ensure the mention pattern in `messages.groupChat.mentionPatterns` explicitly matches how users mention the bot (e.g., `@openclaw`).
 
 #### Stretch Goals
 1. Set up a group-specific instruction: "In this group, always respond in Spanish."

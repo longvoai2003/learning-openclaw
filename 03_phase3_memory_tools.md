@@ -44,19 +44,28 @@
 
 #### How Memory Works Under the Hood
 
-1. **Creation:** When you tell your assistant something important ("I'm a vegetarian"), the AI itself decides to store this as a memory. It uses a built-in memory tool to save the fact.
-2. **Storage:** Memories are stored as structured records in the OpenClaw state directory (`~/.openclaw/`).
-3. **Retrieval:** At the start of each agent turn, relevant memories are retrieved and injected into the system prompt before the AI sees your message.
-4. **Context injection:** The memories appear in the AI's context as something like:
-   ```
-   ## User Memories
-   - User's name is Alex
+1. **Creation:** When you tell your assistant something important ("I'm a vegetarian"), the AI itself decides to store this as a memory. It uses a built-in tool or directly saves the fact to your profile.
+2. **Storage:** Memories are saved in a Markdown file named `USER.md` in the active workspace directory (e.g. `~/.openclaw/workspace-main/USER.md`).
+3. **Retrieval:** At the start of each agent turn, the contents of `USER.md` are retrieved and injected into the system prompt before the AI sees your message.
+4. **Context injection:** The memories appear in the AI's context as a literal Markdown section appended to instructions, looking something like:
+   ```markdown
+   # USER.md - About Your Human
+
+   _Learn about the person you're helping. Update this as you go._
+
+   - **Name:** Alex
+   - **Timezone:** Asia/Saigon (GMT+7)
+
+   ## Context
    - User is a vegetarian
    - User prefers dark mode interfaces
-   - User works at AcmeCorp as a data engineer
+   - Works at AcmeCorp as a data engineer
+
+   ---
+   The more you know, the better you can help. But remember — you're learning about a person, not building a dossier. Respect the difference.
    ```
 
-This means the AI "knows" these things naturally — it doesn't need to look them up.
+This means the AI "knows" these things naturally by reading the shared `USER.md` profile — it doesn't need to look them up.
 
 #### What Makes Good vs. Bad Memories
 

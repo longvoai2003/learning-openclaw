@@ -55,7 +55,7 @@ OpenClaw solves all of this. It is designed to be your **persistent, private, ca
 
 #### The Analogy: Your Personal Butler's Office
 
-Think of OpenClaw like hiring a personal butler and giving them an office in your house:
+**Analogy:** Think of OpenClaw like hiring a personal butler and giving them an office in your house:
 
 - **The office** = your computer, where the Gateway (OpenClaw's server process) runs
 - **The phone lines** = the chat channels (Telegram, WhatsApp, etc.) that connect the outside world to your butler's desk
@@ -221,6 +221,7 @@ These are useful for advanced setups (like running multiple instances) but you c
 ```bash
 node --version
 ```
+Checks your installed Node.js version.
 
 If you see `v22.14.0` or higher, you're good. If not, the installer script will handle it.
 
@@ -230,17 +231,20 @@ macOS / Linux:
 ```bash
 curl -fsSL https://openclaw.ai/install.sh | bash
 ```
+Downloads and runs the official installation script.
 
 Windows (PowerShell):
 ```powershell
 iwr -useb https://openclaw.ai/install.ps1 | iex
 ```
+Downloads and runs the official installation script for Windows.
 
 **Step 4:** Verify the installation.
 
 ```bash
 openclaw --version
 ```
+Prints the currently installed OpenClaw version to confirm successful installation.
 
 You should see the version number printed. If you see "command not found," your terminal may need to be restarted to pick up the new PATH entry.
 
@@ -250,8 +254,13 @@ If you already have Node.js 22.14+ installed:
 
 ```bash
 npm install -g openclaw@latest
+```
+Installs OpenClaw globally via npm.
+
+```bash
 openclaw --version
 ```
+Prints the currently installed OpenClaw version to confirm successful installation.
 
 #### Common Mistakes to Watch For
 
@@ -312,6 +321,7 @@ Without the daemon flag, you'd have to manually start the Gateway every time you
 ```bash
 openclaw onboard --install-daemon
 ```
+Starts the interactive setup wizard and installs the background service.
 
 **Step 2:** Follow the prompts carefully.
 
@@ -325,6 +335,7 @@ The wizard will ask you:
 ```bash
 openclaw gateway status
 ```
+Checks if the background Gateway process is running healthily.
 
 You should see output indicating the Gateway is running, with `Runtime: running` and `RPC probe: ok`.
 
@@ -333,8 +344,9 @@ You should see output indicating the Gateway is running, with `Runtime: running`
 ```bash
 openclaw status
 ```
+Displays a high-level summary of your Gateway version, ports, and connected channels.
 
-This shows you: the Gateway version, listening port, connected channels, and active sessions.
+This shows you: the Gateway version, and listening port, connected channels, and active sessions.
 
 #### Common Mistakes
 
@@ -447,6 +459,7 @@ This prevents anyone on your local network from accessing your assistant.
 ```bash
 openclaw gateway status
 ```
+Checks the health and RPC connectivity of the Gateway daemon.
 
 Note the output. You should see the port, runtime status, and RPC probe result.
 
@@ -455,6 +468,7 @@ Note the output. You should see the port, runtime status, and RPC probe result.
 ```bash
 openclaw logs --follow
 ```
+Streams the Gateway logs to your terminal in real-time.
 
 Leave this running in one terminal and open a new terminal for the next steps. Watch how log entries appear as you interact.
 
@@ -463,16 +477,21 @@ Leave this running in one terminal and open a new terminal for the next steps. W
 ```bash
 # Stop the daemon first
 openclaw gateway stop
+```
+Stops the background Gateway daemon.
 
+```bash
 # Start manually with verbose output
 openclaw gateway --port 18789 --verbose
 ```
+Starts the Gateway manually on port 18789 with detailed logging.
 
 You'll see the initialization sequence: channel connections being established, skills being loaded, and the server binding to port 18789. Press `Ctrl+C` to stop when done, then restart the daemon:
 
 ```bash
 openclaw gateway start
 ```
+Restarts the background Gateway daemon.
 
 ---
 
@@ -518,6 +537,7 @@ Good reasons:
 ```bash
 openclaw dashboard
 ```
+Opens the local Dashboard UI in your default web browser.
 
 This opens your default browser to `http://127.0.0.1:18789`. Alternatively, just navigate to that URL manually.
 
@@ -576,11 +596,13 @@ A fully functional OpenClaw installation where you hold a multi-turn conversatio
    ```bash
    openclaw logs --follow
    ```
+   Streams the Gateway logs to your terminal in real-time.
 
 2. **Open the Dashboard** in your browser:
    ```bash
    openclaw dashboard
    ```
+   Opens the local Dashboard UI in your default web browser.
 
 3. **Have a structured conversation.** Send these messages in order:
 
@@ -610,6 +632,7 @@ A fully functional OpenClaw installation where you hold a multi-turn conversatio
    ```bash
    openclaw status
    ```
+   Displays a high-level summary of your Gateway version, ports, and connected channels.
 
 #### How to Test It
 - ✅ The Dashboard loads at `http://127.0.0.1:18789`
@@ -619,9 +642,9 @@ A fully functional OpenClaw installation where you hold a multi-turn conversatio
 - ✅ `openclaw status` shows "running"
 
 #### Common Pitfalls
-- **Gateway not running:** If the Dashboard won't load, run `openclaw gateway status` to check.
-- **API key issues:** If the AI doesn't respond or gives errors, check your API key in `~/.openclaw/openclaw.json`.
-- **Wrong port:** If you changed the port during onboarding, the Dashboard URL will be different.
+- **Gateway not running:** If the Dashboard won't load, the Gateway might be stopped. **Fix:** Run `openclaw gateway status` to check.
+- **API key issues:** If the AI doesn't respond or gives errors, you might have invalid credentials. **Fix:** Verify your API key in `~/.openclaw/openclaw.json` is correct and has no whitespace.
+- **Wrong port:** If you changed the port during onboarding, the Dashboard URL will be different. **Fix:** Ensure you are accessing the correct port printed during `openclaw gateway status`.
 
 #### Stretch Goals
 1. Try switching models mid-session with `/new claude-sonnet-4-20250514` (or another model name) and notice the difference in responses.
@@ -652,6 +675,7 @@ A comprehensive "system report" about your OpenClaw installation, generated by a
    ```bash
    cat ~/.openclaw/openclaw.json
    ```
+   Outputs the contents of your OpenClaw JSON configuration file.
 
    Read through it. Identify:
    - Your model provider and model name
@@ -669,6 +693,7 @@ A comprehensive "system report" about your OpenClaw installation, generated by a
    ```bash
    ls -la ~/.openclaw/
    ```
+   Lists all files and directories in your primary OpenClaw state directory.
 
    You'll see directories like `agents/`, `skills/`, and files like `openclaw.json`.
 
@@ -676,6 +701,7 @@ A comprehensive "system report" about your OpenClaw installation, generated by a
    ```bash
    openclaw channels status --probe
    ```
+   Probes connected channels to verify their health and configuration.
 
 5. **Generate a system report.** Ask the Dashboard:
 
@@ -688,8 +714,8 @@ A comprehensive "system report" about your OpenClaw installation, generated by a
 - ✅ `openclaw channels status --probe` runs without errors
 
 #### Common Pitfalls
-- **Config file has trailing commas:** JSON doesn't allow trailing commas. If you edit the file manually, validate it.
-- **Confusing `~/.openclaw/` with `~/.agents/`:** These are different directories. OpenClaw's system files are in `~/.openclaw/`. Personal agent skills are in `~/.agents/skills/`.
+- **Config file has trailing commas:** JSON doesn't allow trailing commas, causing parser errors. **Fix:** Use a JSON validator or run `python3 -m json.tool ~/.openclaw/openclaw.json` to check your syntax.
+- **Confusing `~/.openclaw/` with `~/.agents/`:** These are different directories. **Fix:** Use `~/.openclaw/` for OpenClaw's system files and `~/.agents/skills/` for your personal agent skills.
 
 #### Stretch Goals
 1. Find the session transcript file in `~/.openclaw/agents/` and examine the raw JSONL format.
@@ -721,12 +747,14 @@ A customized OpenClaw configuration with adjusted session settings and personali
    ```bash
    cp ~/.openclaw/openclaw.json ~/.openclaw/openclaw.json.backup
    ```
+   Creates a backup copy of your configuration file before editing.
 
 2. **Adjust a system setting in the config:**
    ```bash
    nano ~/.openclaw/openclaw.json
-   # or: code ~/.openclaw/openclaw.json (if you use VS Code)
    ```
+   Opens the configuration file in a terminal text editor.
+
    Find or add the `session` section to change the idle reset timeout:
    ```json
    {
@@ -748,6 +776,8 @@ A customized OpenClaw configuration with adjusted session settings and personali
    ```bash
    nano ~/.openclaw/workspace/IDENTITY.md
    ```
+   Creates or edits the identity file for your agent.
+
    Update it to define who the assistant appears as:
    ```markdown
    - **Name:** Claw
@@ -760,6 +790,8 @@ A customized OpenClaw configuration with adjusted session settings and personali
    ```bash
    nano ~/.openclaw/workspace/SOUL.md
    ```
+   Creates or edits the behavioral core file for your agent.
+
    Integrate your custom persona naturally at the top:
    ```markdown
    You are Claw. Your primary directive is to be a helpful assistant. You always respond in a friendly and concise manner. When you are not sure about something, you say so honestly.
@@ -769,6 +801,7 @@ A customized OpenClaw configuration with adjusted session settings and personali
    ```bash
    openclaw gateway restart
    ```
+   Restarts the Gateway daemon to apply new configuration changes.
 
 5. **Test your changes** in the Dashboard:
 
@@ -782,9 +815,9 @@ A customized OpenClaw configuration with adjusted session settings and personali
 - ✅ `/status` in chat shows the updated configuration
 
 #### Common Pitfalls
-- **Invalid JSON:** The #1 cause of startup failures after config edits. Use a JSON validator or `python3 -m json.tool ~/.openclaw/openclaw.json` to check syntax.
-- **Forgetting to restart:** Config changes don't take effect until the Gateway restarts.
-- **Overwriting the whole file:** Always make targeted edits, don't replace the entire file.
+- **Invalid JSON:** The #1 cause of startup failures after config edits. **Fix:** Use a JSON validator or `python3 -m json.tool ~/.openclaw/openclaw.json` to check syntax.
+- **Forgetting to restart:** Config changes don't take effect until the Gateway restarts. **Fix:** Always run `openclaw gateway restart` after editing JSON configurations.
+- **Overwriting the whole file:** Removing necessary fields will break the Gateway. **Fix:** Always make targeted edits, preserving existing required settings.
 
 #### Stretch Goals
 1. Set the session to never auto-reset (remove the daily 4 AM reset) and observe how the conversation persists indefinitely.
